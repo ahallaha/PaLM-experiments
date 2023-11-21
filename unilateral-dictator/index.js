@@ -1,4 +1,4 @@
-// https://www.jstor.org/stable/4132490
+// https://econweb.ucsd.edu/~jandreon/Econ264/papers/Charness%20Rabin%20QJE%202002.pdf
 
 const scenarios = [
   { name: "Berk29", leftOption: { optionA: 400, optionB: 400 }, rightOption: { optionA: 750, optionB: 400 } },
@@ -39,8 +39,10 @@ export async function run(bot) {
   console.table(results.map(res => ({
     endowment: res.endowment,
     scenario: `${res.scenario}: ${res.choices}`,
-    choice: res.response?.choice
+    choice: res.response.choice
   })))
+
+  console.log("\n")
 }
 
 function parseResponse(rawString) {
@@ -49,7 +51,7 @@ function parseResponse(rawString) {
     return JSON.parse(rawString.match(/\{[\s\S]*\}/).pop())
   } catch (e) {
     return {
-      choice: rawString.toLowerCase().match(/left|right/).pop(),
+      choice: rawString.match(/left|right/i).pop(),
       explanation: rawString
     }
   }
@@ -58,6 +60,7 @@ function parseResponse(rawString) {
 function askBot(bot, endowment, scenario) {
   return bot.ask(
     `You are deciding on allocations for yourself and another person, Person A.
+    ${endowment?.instruction}
       
     Option Left: You get ${scenario.leftOption.optionB}, Person A gets ${scenario.leftOption.optionA}.
     Option Right: You get ${scenario.rightOption.optionB}, Person A gets ${scenario.rightOption.optionA}.
@@ -71,7 +74,6 @@ function askBot(bot, endowment, scenario) {
     }
     
     Do not include any additional text besides the JSON object.
-    Only provide a RFC8259 compliant JSON response.`,
-    { context: endowment?.instruction }
+    Only provide a RFC8259 compliant JSON response.`
   )
 }
