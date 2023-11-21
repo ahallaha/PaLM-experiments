@@ -30,19 +30,29 @@ export async function run(bot) {
   const promiseResults = await Promise.allSettled(promises)
   for (let i = 0; i < results.length; i++) {
     results[i].response = promiseResults[i].value
-      ? (() => {
-        // We have to do lots of work here because PaLM can't follow instructions
-        // TODO: pull first instance of 'right' or 'left' from result to construct result JSON.
-        try {
-          return JSON.parse(promiseResults[i].value.substring(promiseResults[i].value.indexOf("{"), promiseResults[i].value.indexOf("}") + 1))
-        } catch (e) {
-          return promiseResults[i].value
-        }
-      })()
-      : promiseResults[i].reason
+      ? parseResponse(promiseResults[i].value)
+      : { choice: undefined, explanation: promiseResults[i].reason }
   }
 
-  return results
+  console.log('Charness and Raben: Unilateral Dictator Test')
+
+  console.table(results.map(res => ({
+    endowment: res.endowment,
+    scenario: `${res.scenario}: ${res.choices}`,
+    choice: res.response?.choice
+  })))
+}
+
+function parseResponse(rawString) {
+  // We have to do lots of work here because PaLM can't follow instructions
+  try {
+    return JSON.parse(rawString.match(/\{[\s\S]*\}/).pop())
+  } catch (e) {
+    return {
+      choice: rawString.toLowerCase().match(/left|right/).pop(),
+      explanation: rawString
+    }
+  }
 }
 
 function askBot(bot, endowment, scenario) {

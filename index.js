@@ -4,6 +4,6 @@ import 'dotenv/config'
 import PaLM from "palm-api"
 import { run as UnilateralDictator } from "./unilateral-dictator/index.js"
 
-let bot = new PaLM(process.env.API_KEY)
+const bot = new PaLM(process.env.API_KEY)
 
-console.log(await UnilateralDictator(bot))
+UnilateralDictator(bot)
