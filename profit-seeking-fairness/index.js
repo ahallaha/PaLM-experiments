@@ -71,7 +71,7 @@ function askBot(bot, storeAction, politicalView, newPrice) {
 }
 
 function displayResults(results) {
-  console.log("Kahneman et al.: Fairness as a Constraint on Profit Seeking")
+  console.log("Fairness as a constraint on profit-seeking: Kahneman et al.")
 
   console.table(results.map(res => ({
     "political view": res.view,

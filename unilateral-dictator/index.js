@@ -78,7 +78,7 @@ function askBot(bot, endowment, scenario) {
 }
 
 function displayResults(results) {
-  console.log("Charness and Raben: Unilateral Dictator Test")
+  console.log("A social preferences experiment: Charness and Rabin")
 
   console.table(results.map(res => ({
     endowment: res.endowment,

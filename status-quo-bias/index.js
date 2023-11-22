@@ -16,7 +16,7 @@ export async function run(bot) {
   scenarios.push({ framing: "Neutral framing" })
 
   for (let i = 0; i < allocations.length; i++) {
-    // toSpliced polyfill
+    // move to toSpliced in node 20
     const options = JSON.parse(JSON.stringify(allocations))
     options.splice(i, 1)
 
@@ -108,7 +108,7 @@ function askBot(bot, options, statusQuo) {
 
 
 function displayResults(results) {
-  console.log("Samuelson, William and Richard Zeckhauser: Status quo bias in decision making")
+  console.log("Status Quo bias in decision-making: Samuelson and Zeckhauser")
 
   console.table(results.map(res => ({
     framing: res.framing,
