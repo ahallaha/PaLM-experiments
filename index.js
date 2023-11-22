@@ -4,8 +4,10 @@ import 'dotenv/config'
 import PaLM from "palm-api"
 import { run as UnilateralDictator } from "./unilateral-dictator/index.js"
 import { run as ProfitSeekingFairness } from "./profit-seeking-fairness/index.js"
+import { run as StatusQuoBias } from "./status-quo-bias/index.js"
 
 const bot = new PaLM(process.env.API_KEY)
 
 UnilateralDictator(bot)
 ProfitSeekingFairness(bot)
+StatusQuoBias(bot)
